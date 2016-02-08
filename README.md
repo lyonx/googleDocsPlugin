@@ -1,0 +1,2 @@
+# googleAppsDocPlugin
+
