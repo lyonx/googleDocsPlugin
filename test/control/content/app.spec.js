@@ -5,7 +5,7 @@ describe('Unit: googleAppsDocPluginContent content app', function () {
     beforeEach(inject(function () {
 
     }));
-    var ContentHome, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q, Utils;
+    var ContentHome, scope, $rootScope, $controller, Buildfire, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q, Utils;
 
     beforeEach(inject(function (_$rootScope_, _$q_, _$controller_, _TAG_NAMES_, _STATUS_CODE_, _STATUS_MESSAGES_, _Utils_) {
       $rootScope = _$rootScope_;
@@ -17,17 +17,7 @@ describe('Unit: googleAppsDocPluginContent content app', function () {
       STATUS_MESSAGES = _STATUS_MESSAGES_;
       Utils = _Utils_;
       Buildfire = {
-        components: {
-          carousel: {
-            editor: function (name) {
-              return {}
-            },
-            viewer: function (name) {
-              return {}
-            }
-          }
-
-        },     spinner: {
+        spinner: {
           hide: function () {
             return {}
           },
@@ -66,9 +56,10 @@ describe('Unit: googleAppsDocPluginContent content app', function () {
       });
 
       it('it should pass if ContentHome.validateUrl is called with error', function () {
-        ContentHome.custom = 'https://docs.google.com';
+        ContentHome.custom = 'https://docs.google.com/document/d/1ssHPuiRbE470Y2UWJEDajY-UALH8dyQem5jJxAO9xTg/edit';
         Utils.validateUrl(ContentHome.custom)
         ContentHome.validateUrl();
+
       });
 
 
@@ -85,10 +76,6 @@ describe('Unit: googleAppsDocPluginContent content app', function () {
       });
       it('it should pass if  ContentHome.clearData is called', function () {
         ContentHome.clearUrl();
-      });
-      it('it should pass if  ContentHome.init is called', function () {
-        //ContentHome.init();
-        //ContentHome.success({data:{content:{}}});
       });
     });
   });
