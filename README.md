@@ -1,2 +1,2 @@
-# googleDocsPlugin
-Google Docs Plugin
+# googleAppsDocPlugin
+
