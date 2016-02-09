@@ -1,0 +1,21 @@
+{
+  "author": "BuildFire",
+  "pluginName": "Google Apps docs Plugin",
+  "pluginDescription": "",
+  "supportEmail": "support@buildfire.com",
+  "control": {
+    "content": {
+      "enabled": true
+    },
+    "settings": {
+      "enabled": false
+    },
+    "design": {
+      "enabled": false
+    }
+  },
+  "widget": {
+  },
+  "features": [],
+  "languages": ["en"]
+}
