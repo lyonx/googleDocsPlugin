@@ -77,6 +77,10 @@ describe('Unit: googleAppsDocPluginContent content app', function () {
       it('it should pass if  ContentHome.clearData is called', function () {
         ContentHome.clearUrl();
       });
+      it('it should pass if  ContentHome.init is called', function () {
+        ContentHome.init();
+        ContentHome.success({data:{content:{}}});
+      });
     });
   });
 });
