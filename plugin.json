@@ -1,7 +1,7 @@
 {
   "author": "BuildFire",
   "pluginName": "Google Apps docs Plugin",
-  "pluginDescription": "",
+  "pluginDescription": "A plugin that provides integration with google apps docs to allow users to view the google docs.",
   "supportEmail": "support@buildfire.com",
   "control": {
     "content": {
