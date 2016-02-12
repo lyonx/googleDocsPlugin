@@ -69,6 +69,14 @@
           var regExp = /^https?:\/\/.+\/document\/.+/;
           return regExp.test(url);
         }
+        //mobilebasic
+        ,
+        formatUrl: function (url) {
+          var substr="https://docs.google.com/document/d/";
+          var array= url.split(substr);
+          var newArray=array[1].split('/');
+          return substr+newArray[0]+'/mobilebasic';
+        }
       }
     }]);
 })(window.angular, window.buildfire);

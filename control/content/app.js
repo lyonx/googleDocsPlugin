@@ -30,6 +30,7 @@
         ContentHome.validateUrl = function () {
           ContentHome.data.content.docUrl = ContentHome.docUrl;
           if (Utils.validateUrl(ContentHome.docUrl)) {
+            ContentHome.data.content.docUrl=Utils.formatUrl(ContentHome.docUrl);
             ContentHome.validUrl = true;
             $timeout(function () {
               ContentHome.validUrl = false;
