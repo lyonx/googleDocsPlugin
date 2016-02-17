@@ -63,6 +63,10 @@
           ContentHome.saveData(ContentHome.data, TAG_NAMES.GOOGLE_DOC_INFO);
         };
 
+        ContentHome.gotToSite = function(){
+          window.open('https://accounts.google.com', '_blank');
+        }
+
         /*
          * Go pull any previously saved data
          * */
