@@ -13,6 +13,10 @@
             WidgetHome.data = result.data;
             if (!WidgetHome.data.content)
               WidgetHome.data.content = {};
+            if (WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'preview')
+              WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/edit', '/mobilebasic');
+            else if ((WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'editable'))
+              WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/mobilebasic', '/edit');
             console.log(">>>>>", WidgetHome.data);
           };
           WidgetHome.error = function (err) {
@@ -28,6 +32,10 @@
             WidgetHome.data = event.data;
             if (WidgetHome.data && !WidgetHome.data.content)
               WidgetHome.data.content = {};
+            if (WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'preview')
+              WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/edit', '/mobilebasic');
+            else if ((WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'editable'))
+              WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/mobilebasic', '/edit');
           }
         };
 
