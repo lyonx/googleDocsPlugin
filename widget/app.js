@@ -1,9 +1,10 @@
 'use strict';
 
-(function (angular) {
+(function (angular, buildfire) {
   angular.module('googleAppsDocPluginWidget', ['ui.bootstrap'])
     .controller('WidgetHomeCtrl', ['$scope', 'Buildfire', 'DataStore', 'TAG_NAMES', 'STATUS_CODE',
       function ($scope, Buildfire, DataStore, TAG_NAMES, STATUS_CODE) {
+        buildfire.datastore.disableRefresh();
         var WidgetHome = this;
         /*
          * Fetch user's data from datastore
@@ -13,6 +14,10 @@
             WidgetHome.data = result.data;
             if (!WidgetHome.data.content)
               WidgetHome.data.content = {};
+            if (WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'preview')
+              WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/edit', '/mobilebasic');
+            else if ((WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'editable'))
+              WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/mobilebasic', '/edit');
             console.log(">>>>>", WidgetHome.data);
           };
           WidgetHome.error = function (err) {
@@ -28,6 +33,10 @@
             WidgetHome.data = event.data;
             if (WidgetHome.data && !WidgetHome.data.content)
               WidgetHome.data.content = {};
+            if (WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'preview')
+              WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/edit', '/mobilebasic');
+            else if ((WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'editable'))
+              WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/mobilebasic', '/edit');
           }
         };
 
@@ -40,4 +49,4 @@
         return $sce.trustAsResourceUrl(url);
       }
     }]);
-})(window.angular);
+})(window.angular, window.buildfire);
