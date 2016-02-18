@@ -34,6 +34,7 @@
 
         ContentHome.validateUrl = function () {
           ContentHome.data.content.docUrl = ContentHome.docUrl;
+          ContentHome.data.content.mode = ContentHome.mode;
           if (Utils.validateUrl(ContentHome.docUrl)) {
             ContentHome.validUrl = true;
             $timeout(function () {
@@ -65,7 +66,7 @@
 
         ContentHome.gotToSite = function(){
           window.open('https://accounts.google.com', '_blank');
-        }
+        };
 
         /*
          * Go pull any previously saved data
