@@ -68,6 +68,10 @@
           window.open('https://accounts.google.com', '_blank');
         };
 
+        ContentHome.gotToSupport = function(){
+          window.open('https://support.google.com/drive/answer/2494822?hl=en', '_blank');
+        };
+
         /*
          * Go pull any previously saved data
          * */
