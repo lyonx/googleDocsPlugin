@@ -78,16 +78,22 @@
         ContentHome.init = function () {
           ContentHome.success = function (result) {
             console.info('init success result:', result);
-            if (Object.keys(result.data).length > 0) {
-              ContentHome.data = result.data;
-            }
-            if (ContentHome.data) {
-              if (!ContentHome.data.content)
-                ContentHome.data.content = {};
-              if (ContentHome.data.content.docUrl)
-                ContentHome.docUrl = ContentHome.data.content.docUrl;
-              if (ContentHome.data.content.mode)
-                ContentHome.mode = ContentHome.data.content.mode;
+            if(result.data && result.id) {
+              if (Object.keys(result.data).length > 0) {
+                ContentHome.data = result.data;
+              }
+              if (ContentHome.data) {
+                if (!ContentHome.data.content)
+                  ContentHome.data.content = {};
+                if (ContentHome.data.content.docUrl)
+                  ContentHome.docUrl = ContentHome.data.content.docUrl;
+                if (ContentHome.data.content.mode)
+                  ContentHome.mode = ContentHome.data.content.mode;
+              }
+            }else {
+              var dummyData = {url: "https://docs.google.com/document/d/1SqWeU4ewzXQBpR98TYGiBZ_iPdQH92wOb7jT0y-_Cbc/pub"};
+              ContentHome.docUrl = ContentHome.data.content.url = dummyData.url;
+              ContentHome.mode = ContentHome.MODE_TYPE.PREVIEW;
             }
           };
           ContentHome.error = function (err) {
