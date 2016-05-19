@@ -26,7 +26,7 @@ describe('Unit: googleAppsDocPluginWidget app', function () {
 
         }
       };
-        ActionItems = jasmine.createSpyObj('ActionItems', ['showDialog']);
+      ActionItems = jasmine.createSpyObj('ActionItems', ['showDialog']);
       inject(function (_$filter_) {
         $filter = _$filter_;
       });
@@ -42,15 +42,15 @@ describe('Unit: googleAppsDocPluginWidget app', function () {
         ActionItems: ActionItems,
         STATUS_CODE: STATUS_CODE,
         CONTENT_TYPE: CONTENT_TYPE,
-        LAYOUTS: LAYOUTS,
+        LAYOUTS: LAYOUTS
       });
     });
     describe('It will test the defined methods', function () {
 
       it('it should pass if WidgetHome.init is called for error', function () {
-        var result= {};
+        var result = {};
         WidgetHome.init();
-    //    WidgetHome.success()
+        //    WidgetHome.success()
       });
       it('it should pass if WidgetHome.init is called for error', function () {
         WidgetHome.init();
@@ -59,13 +59,14 @@ describe('Unit: googleAppsDocPluginWidget app', function () {
 
       it('it should pass if  WidgetHome.onUpdateCallback is called for error', function () {
         var event = {
-          tag:TAG_NAMES.GOOGLE_DOC_INFO
-        }
-        WidgetHome.data= {
-          design:""
-        }
-              WidgetHome.onUpdateCallback(event)
-        WidgetHome.success({data:{content:{}}});
+          tag: TAG_NAMES.GOOGLE_DOC_INFO,
+          data : {content : {}}
+        };
+        WidgetHome.data = {
+          design: ""
+        };
+        WidgetHome.onUpdateCallback(event);
+        WidgetHome.success({data: {content: {}}});
       });
 
     });
@@ -76,7 +77,8 @@ describe('Unit: googleAppsDocPluginWidget app', function () {
         var url = 'https://docs.google.com/document/d/1ssHPuiRbE470Y2UWJEDajY-UALH8dyQem5jJxAO9xTg/edit', result;
         var updatedUrl = 'https://docs.google.com/document/d/1ssHPuiRbE470Y2UWJEDajY-UALH8dyQem5jJxAO9xTg/edit';
         // Act.
-        result = $filter('returnUrl')(url);});
+        result = $filter('returnUrl')(url);
+      });
 
     });
   });
