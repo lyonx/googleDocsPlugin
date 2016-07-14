@@ -4,11 +4,17 @@
   angular.module('googleAppsDocPluginWidget', ['ui.bootstrap'])
     .controller('WidgetHomeCtrl', ['$scope', 'Buildfire', 'DataStore', 'TAG_NAMES', 'STATUS_CODE',
       function ($scope, Buildfire, DataStore, TAG_NAMES, STATUS_CODE) {
-        buildfire.datastore.disableRefresh();
+
         var WidgetHome = this;
         /*
          * Fetch user's data from datastore
          */
+
+          //Refresh list of bookmarks on pulling the tile bar
+          buildfire.datastore.onRefresh(function () {
+              WidgetHome.init();
+          });
+
         WidgetHome.init = function () {
           WidgetHome.success = function (result) {
             if(result.data && result.id) {
