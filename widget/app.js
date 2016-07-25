@@ -4,7 +4,7 @@
   angular.module('googleAppsDocPluginWidget', ['ui.bootstrap'])
     .controller('WidgetHomeCtrl', ['$scope', 'Buildfire', 'DataStore', 'TAG_NAMES', 'STATUS_CODE',
       function ($scope, Buildfire, DataStore, TAG_NAMES, STATUS_CODE) {
-        buildfire.datastore.disableRefresh();
+
         var WidgetHome = this;
         /*
          * Fetch user's data from datastore
