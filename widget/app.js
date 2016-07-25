@@ -9,6 +9,12 @@
         /*
          * Fetch user's data from datastore
          */
+
+          //Refresh list of bookmarks on pulling the tile bar
+          buildfire.datastore.onRefresh(function () {
+              WidgetHome.init();
+          });
+
         WidgetHome.init = function () {
           WidgetHome.success = function (result) {
             if(result.data && result.id) {
