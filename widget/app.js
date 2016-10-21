@@ -15,16 +15,65 @@
               WidgetHome.init();
           });
 
+        var googleDocsUrlSuffix = {
+          mobile: 'mobilebasic',
+          preview: 'preview',
+          edit: 'edit'
+        };
+
+        var appendSuffix = function(url, suffix){
+          var forwardSlash = '/';
+          var forwardSlashLength  = forwardSlash.length;
+          var suffixLength = suffix.length;
+          var urlLength = url.length;
+          var endWithForwardSlash = (url.charAt(url.length - 1) == forwardSlash);
+          var fullSuffixLength =  (endWithForwardSlash) ? suffixLength + forwardSlashLength : suffixLength;
+
+          //If the URL already ends in the suffix, then exit
+          if(url.indexOf(suffix) >= (urlLength - fullSuffixLength)){
+            return url;
+          }
+
+          //If no suffix is included, append one
+          if(url.indexOf(googleDocsUrlSuffix.mobile) == -1 &&
+              url.indexOf(googleDocsUrlSuffix.preview) == -1 &&
+              url.indexOf(googleDocsUrlSuffix.edit) == -1)
+          {
+            if(endWithForwardSlash){
+              url = url + suffix;
+            }
+            else{
+              url = url + forwardSlash + suffix;
+            }
+
+            return url;
+          }else {
+            //If a suffix exists, then replace it
+            //TODO: Be smarter and find the specific index
+            url = url.replace(googleDocsUrlSuffix.mobile, suffix);
+            url = url.replace(googleDocsUrlSuffix.preview, suffix);
+            url = url.replace(googleDocsUrlSuffix.edit, suffix);
+
+            return url;
+          }
+        };
+
         WidgetHome.init = function () {
           WidgetHome.success = function (result) {
             if(result.data && result.id) {
               WidgetHome.data = result.data;
               if (!WidgetHome.data.content)
                 WidgetHome.data.content = {};
-              if (WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'preview')
-                WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/edit', '/mobilebasic');
-              else if ((WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'editable'))
-                WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/mobilebasic', '/edit');
+
+              console.warn('before', WidgetHome.data.content.docUrl);
+              if (WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'preview'){
+                WidgetHome.data.content.docUrl = appendSuffix(WidgetHome.data.content.docUrl, googleDocsUrlSuffix.preview);
+              }
+              else if ((WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'editable')){
+                WidgetHome.data.content.docUrl = appendSuffix(WidgetHome.data.content.docUrl, googleDocsUrlSuffix.edit);
+              }
+              console.warn('after', WidgetHome.data.content.docUrl);
+
               console.log(">>>>>", WidgetHome.data);
             }else
             {
@@ -48,10 +97,16 @@
             WidgetHome.data = event.data;
             if (WidgetHome.data && !WidgetHome.data.content)
               WidgetHome.data.content = {};
-            if (WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'preview')
-              WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/edit', '/mobilebasic');
-            else if ((WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'editable'))
-              WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/mobilebasic', '/edit');
+
+            console.warn('before', WidgetHome.data.content.docUrl);
+            if (WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'preview'){
+              WidgetHome.data.content.docUrl = appendSuffix(WidgetHome.data.content.docUrl, googleDocsUrlSuffix.preview);
+            }
+            else if ((WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'editable')){
+              WidgetHome.data.content.docUrl = appendSuffix(WidgetHome.data.content.docUrl, googleDocsUrlSuffix.edit);
+            }
+            console.warn('after', WidgetHome.data.content.docUrl);
+
           }
         };
 
