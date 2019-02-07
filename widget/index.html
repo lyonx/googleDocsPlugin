@@ -2,6 +2,7 @@
 <html ng-app="googleAppsDocPluginWidget">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="buildfire" content="disableTheme">
 
   <link href="../../../styles/helper.css" rel="stylesheet">
   <link href="../../../styles/siteIcons.css" rel="stylesheet">
@@ -16,14 +17,40 @@
   <script src="app.js"></script>
   <script src="enums.js"></script>
   <script src="app.services.js"></script>
+  <style>
+    iframe {
+      height: 100%;
+      position: relative;
+      border:none;
+      outline:none;
+      width:100%;
+      display:block;
+      max-width:100%;
+    }
+    html[buildfire] {
+      background: white !important;
+      width: 100%;
+      min-width: 100%;
+      max-width: 100%;
+      height: 100%;
+      background: none;
+      overflow: hidden !important;
+    }
+    html[buildfire] body {
+      height: 100% !important;
+      width: 100% !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 <body>
 <div class="content"
      style="-webkit-overflow-scrolling: touch !important;overflow: auto; height: 100%;"
      ng-controller="WidgetHomeCtrl as WidgetHome">
   <iframe src="{{WidgetHome.data.content.docUrl | returnUrl}}"
-          ng-if="WidgetHome.data.content.docUrl"
-          style="height: 100%;position: relative;"></iframe>
+          ng-if="WidgetHome.data.content.docUrl"></iframe>
 </div>
 </body>
 </html>
