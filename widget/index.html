@@ -20,10 +20,11 @@
 <body>
 <div class="content"
      style="-webkit-overflow-scrolling: touch !important;overflow: auto; height: 100%;"
+     ng-style="backgroundCSS"
      ng-controller="WidgetHomeCtrl as WidgetHome">
-  <iframe src="{{WidgetHome.data.content.docUrl | returnUrl}}"
+  <iframe width="100" src="{{WidgetHome.data.content.docUrl | returnUrl}}"
           ng-if="WidgetHome.data.content.docUrl"
-          style="height: 100%;position: relative;"></iframe>
+          style="height: 100%;position: relative; max-width: 100vw"></iframe>
 </div>
 </body>
 </html>

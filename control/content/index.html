@@ -93,6 +93,31 @@
         </div>
       </div>
     </div>
+    
+    <div class="row margin-bottom-twenty margin-top-twenty clearfix">
+      <div class="main col-md-9 pull-right">
+        <div class="form-required labels col-md-5 padding-left-zero pull-left">Custom Background</div>
+
+        <input type="radio" ng-checked="ContentHome.data.content.customBg" ng-click="ContentHome.toggleBg(true);" >
+        <label class="padding-right-ten">True</label>
+
+        <input type="radio" ng-checked="!ContentHome.data.content.customBg" ng-click="ContentHome.toggleBg(false);" >
+        <label class="padding-right-ten">False</label>
+
+      </div>
+    </div>
+    <div class="row margin-bottom-twenty clearfix" ng-hide="!ContentHome.data.content.customBg">
+      <div class="main col-md-9 pull-right">
+        <div>
+          <a class="img-thumbnail" style="min-width: 34px;min-height: 34px;position:relative;;" ng-click="openDialog()">
+            <div style="min-width: 22px;min-height: 22px;" class="color border-radius-four border-grey" ng-style="backgroundCSS"></div>
+            <div style="border: 1px solid #f50000;-ms-transform: skewY(45deg);-webkit-transform: skewY(45deg);
+            transform: skewY(45deg);width: 100%;position: absolute;top: 50%;left: 0;border-radius: 10px;" ng-hide="ContentHome.data.content.backgroundCSS"></div>
+          </a>
+          <label class="ellipsis" >Background Color</label>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 </body>

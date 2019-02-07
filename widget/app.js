@@ -19,6 +19,17 @@
           WidgetHome.success = function (result) {
             if(result.data && result.id) {
               WidgetHome.data = result.data;
+              if (WidgetHome.data.content.backgroundCSS) {
+                if (WidgetHome.data.content.customBg) {
+                  $scope.backgroundCSS = {
+                    'background-color': WidgetHome.data.content.backgroundCSS
+                  }
+                } else {
+                  $scope.backgroundCSS = {
+                    'background-color': 'unset'
+                  }
+                }
+              }
               if (!WidgetHome.data.content)
                 WidgetHome.data.content = {};
               if (WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'preview')
@@ -46,6 +57,17 @@
         WidgetHome.onUpdateCallback = function (event) {
           if (event && event.tag === TAG_NAMES.GOOGLE_DOC_INFO) {
             WidgetHome.data = event.data;
+            if (WidgetHome.data.content.backgroundCSS) {
+              if (WidgetHome.data.content.customBg) {
+                $scope.backgroundCSS = {
+                  'background-color': WidgetHome.data.content.backgroundCSS
+                }
+              } else {
+                $scope.backgroundCSS = {
+                  'background-color': 'unset'
+                }
+              }
+            }
             if (WidgetHome.data && !WidgetHome.data.content)
               WidgetHome.data.content = {};
             if (WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'preview')
@@ -57,6 +79,11 @@
 
         DataStore.onUpdate().then(null, null, WidgetHome.onUpdateCallback);
         WidgetHome.init();
+
+        buildfire.messaging.onReceivedMessage = function (data) {
+          $scope.backgroundCSS = data;
+          if (!$scope.$$phase) $scope.$apply();
+        }
 
       }])
     .filter('returnUrl', ['$sce', function ($sce) {

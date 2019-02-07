@@ -14,8 +14,9 @@
 
         ContentHome.data = {
           content: {
-            "docUrl": "",
-            "mode": ""
+            "docUrl": "https://docs.google.com/document/d/1SqWeU4ewzXQBpR98TYGiBZ_iPdQH92wOb7jT0y-_Cbc/pub",
+            "mode": ContentHome.MODE_TYPE.PREVIEW,
+            "customBg": false
           }
         };
 
@@ -72,6 +73,34 @@
           window.open('https://support.google.com/drive/answer/2494822?hl=en', '_blank');
         };
 
+        $scope.openDialog = function() {
+          buildfire.colorLib.showDialog(ContentHome.data.content.color, { hideGradient: true, backdrop: false }, onChange, callback);
+  
+          function callback(err, result) {
+            if (err && err.solid) result = err;
+            if (!result) return;
+            ContentHome.data.content.backgroundCSS = result.solid.color;
+            ContentHome.data.content.color = result;
+            $scope.backgroundCSS = {
+              'background-color' : ContentHome.data.content.backgroundCSS
+            }
+            ContentHome.saveData(ContentHome.data, TAG_NAMES.GOOGLE_DOC_INFO);
+          }
+  
+          function onChange(err, result) {
+            if (err && err.solid) result = err;
+            if (!result) return;
+            buildfire.messaging.sendMessageToWidget({
+              'background-color' : result.solid.color
+            });
+          }
+        };
+
+        ContentHome.toggleBg = function (enabled) {
+          ContentHome.data.content.customBg = enabled
+          ContentHome.saveData(ContentHome.data, TAG_NAMES.GOOGLE_DOC_INFO);
+        }
+
         /*
          * Go pull any previously saved data
          * */
@@ -82,6 +111,11 @@
               if (Object.keys(result.data).length > 0) {
                 ContentHome.data = result.data;
               }
+              if(ContentHome.data.content.backgroundCSS) {
+                $scope.backgroundCSS = {
+                  'background-color' : ContentHome.data.content.backgroundCSS
+                }
+              }
               if (ContentHome.data) {
                 if (!ContentHome.data.content)
                   ContentHome.data.content = {};
@@ -90,7 +124,7 @@
                 if (ContentHome.data.content.mode)
                   ContentHome.mode = ContentHome.data.content.mode;
               }
-            }else {
+            } else {
               var dummyData = {url: "https://docs.google.com/document/d/1SqWeU4ewzXQBpR98TYGiBZ_iPdQH92wOb7jT0y-_Cbc/pub"};
               ContentHome.docUrl = ContentHome.data.content.url = dummyData.url;
               ContentHome.mode = ContentHome.MODE_TYPE.PREVIEW;
