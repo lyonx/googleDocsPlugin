@@ -1,67 +1,59 @@
-'use strict';
+const flags = {};
 
-(function (angular, buildfire) {
-  angular.module('googleAppsDocPluginWidget', ['ui.bootstrap'])
-    .controller('WidgetHomeCtrl', ['$scope', 'Buildfire', 'DataStore', 'TAG_NAMES', 'STATUS_CODE',
-      function ($scope, Buildfire, DataStore, TAG_NAMES, STATUS_CODE) {
+const setFlags = () => {
+  flags.isWeb = (buildfire.context.device.platform == 'web');
+  flags.isLiveMode = buildfire.context.liveMode;
+  flags.isNotCP = (flags.isLiveMode === 1 || !flags.isWeb);
+};
 
-        var WidgetHome = this;
-        /*
-         * Fetch user's data from datastore
-         */
+const render = (content) => {
 
-          //Refresh list of bookmarks on pulling the tile bar
-          buildfire.datastore.onRefresh(function () {
-              WidgetHome.init();
-          });
+  const handleWindow = (openWindow, displaySuccessMessage) => {
+    if (openWindow) {
+      setTimeout(() => buildfire.navigation.goBack(), 750);
+      buildfire.navigation.openWindow(content.docUrl, "_blank");
+      return;
+    }
+    if (displaySuccessMessage) {
+      window.document.getElementById('successMessage').style.display = 'block';
+      window.document.getElementById('targetUrl').href = content.docUrl;
+      return;
+    }
+  };
 
-        WidgetHome.init = function () {
-          WidgetHome.success = function (result) {
-            if(result.data && result.id) {
-              WidgetHome.data = result.data;
-              if (!WidgetHome.data.content)
-                WidgetHome.data.content = {};
-              if (WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'preview')
-                WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/edit', '/mobilebasic');
-              else if ((WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'editable'))
-                WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/mobilebasic', '/edit');
-              console.log(">>>>>", WidgetHome.data);
-            }else
-            {
-              WidgetHome.data = {
-                content: {}
-              };
-              var dummyData = {url: "https://docs.google.com/document/d/1SqWeU4ewzXQBpR98TYGiBZ_iPdQH92wOb7jT0y-_Cbc/pub"};
-              WidgetHome.data.content.docUrl = dummyData.url;
-            }
-          };
-          WidgetHome.error = function (err) {
-            if (err && err.code !== STATUS_CODE.NOT_FOUND) {
-              console.error('Error while getting data', err);
-            }
-          };
-          DataStore.get(TAG_NAMES.GOOGLE_DOC_INFO).then(WidgetHome.success, WidgetHome.error);
-        };
+  setFlags();
+  const openWindow = flags.isNotCP; //on the device and open in pop up or native brow
+  const displaySuccessMessage = content.docUrl && flags.isWeb && !flags.isLiveMode;
 
-        WidgetHome.onUpdateCallback = function (event) {
-          if (event && event.tag === TAG_NAMES.GOOGLE_DOC_INFO) {
-            WidgetHome.data = event.data;
-            if (WidgetHome.data && !WidgetHome.data.content)
-              WidgetHome.data.content = {};
-            if (WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'preview')
-              WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/edit', '/mobilebasic');
-            else if ((WidgetHome.data.content.mode && WidgetHome.data.content.docUrl && WidgetHome.data.content.mode == 'editable'))
-              WidgetHome.data.content.docUrl = WidgetHome.data.content.docUrl.replace('/mobilebasic', '/edit');
-          }
-        };
+  handleWindow(openWindow, displaySuccessMessage);
 
-        DataStore.onUpdate().then(null, null, WidgetHome.onUpdateCallback);
-        WidgetHome.init();
+};
 
-      }])
-    .filter('returnUrl', ['$sce', function ($sce) {
-      return function (url) {
-        return $sce.trustAsResourceUrl(url);
-      }
-    }]);
-})(window.angular, window.buildfire);
+buildfire.spinner.show();
+buildfire.datastore.onUpdate(event => render(event.data.content));
+buildfire.datastore.get("googleDocInfo", (err, result) => {
+  if (err) {
+    console.error("error: ", err);
+    buildfire.spinner.hide();
+    return;
+  }
+
+  if (!result.data || !result.data.content) {
+    buildfire.spinner.hide();
+    return;
+  }
+
+  const { content } = result.data;
+
+  if (content.docUrl) content.docUrl = content.docUrl.replace('/edit', '/mobilebasic');
+
+  render(content);
+
+  buildfire.spinner.hide();
+
+  try {
+    buildfire.appearance.ready();
+  } catch (err) {
+    console.log('appearance.ready() failed. Is sdk up to date?');
+  }
+});

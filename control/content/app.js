@@ -2,20 +2,16 @@
 
 (function (angular, buildfire) {
   angular.module('googleAppsDocPluginContent', ['ui.bootstrap'])
-    .controller('ContentHomeCtrl', ['$scope', 'Buildfire', 'STATUS_CODE', 'TAG_NAMES', 'DataStore', 'Utils', '$timeout',
-      function ($scope, Buildfire, STATUS_CODE, TAG_NAMES, DataStore, Utils, $timeout) {
+    .controller('ContentHomeCtrl', ['TAG_NAMES', 'DataStore', 'Utils', '$timeout',
+      function (TAG_NAMES, DataStore, Utils, $timeout) {
         var ContentHome = this;
         ContentHome.validUrl = false;
         ContentHome.inValidUrl = false;
-        ContentHome.MODE_TYPE = {};
-        ContentHome.MODE_TYPE.PREVIEW = 'preview';
-        ContentHome.MODE_TYPE.EDITABLE = 'editable';
-        ContentHome.mode = ContentHome.MODE_TYPE.PREVIEW;
 
         ContentHome.data = {
           content: {
             "docUrl": "",
-            "mode": ""
+            "mode": "preview"
           }
         };
 
@@ -34,7 +30,6 @@
 
         ContentHome.validateUrl = function () {
           ContentHome.data.content.docUrl = ContentHome.docUrl;
-          ContentHome.data.content.mode = ContentHome.mode;
           if (Utils.validateUrl(ContentHome.docUrl)) {
             ContentHome.validUrl = true;
             $timeout(function () {
@@ -87,20 +82,17 @@
                   ContentHome.data.content = {};
                 if (ContentHome.data.content.docUrl)
                   ContentHome.docUrl = ContentHome.data.content.docUrl;
-                if (ContentHome.data.content.mode)
-                  ContentHome.mode = ContentHome.data.content.mode;
               }
             }else {
               var dummyData = {url: "https://docs.google.com/document/d/1SqWeU4ewzXQBpR98TYGiBZ_iPdQH92wOb7jT0y-_Cbc/pub"};
               ContentHome.docUrl = ContentHome.data.content.url = dummyData.url;
-              ContentHome.mode = ContentHome.MODE_TYPE.PREVIEW;
             }
           };
           ContentHome.error = function (err) {
-            if (err && err.code !== STATUS_CODE.NOT_FOUND) {
+            if (err && err.code !== 'NOTFOUND') {
               console.error('Error while getting data', err);
             }
-            else if (err && err.code === STATUS_CODE.NOT_FOUND) {
+            else if (err && err.code === 'NOTFOUND') {
               ContentHome.saveData(JSON.parse(angular.toJson(ContentHome.data)), TAG_NAMES.GOOGLE_DOC_INFO);
             }
           };
